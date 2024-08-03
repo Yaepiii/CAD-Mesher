@@ -1,6 +1,6 @@
 # CAD-Mesher
 
-This is the repository that contains source code for the [CAD-Mesher website](https://CAD-Mesher.github.io).
+This is the repository that contains source code for the [CAD-Mesher website](https://yaepiii.github.io/CAD-Mesher.github.io/).
 
 If you find CAD-Mesher useful for your work please cite:
 ```
