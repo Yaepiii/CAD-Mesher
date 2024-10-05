@@ -4,6 +4,8 @@ This is the repository that contains source code for the [CAD-Mesher website](ht
 
 The code is being organized...
 
+When the article is accepted, the code will be published.
+
 If you are interested in our work or use our method in your work, please consider citing the following:
 ```
 @misc{jia2024cadmesherconvenientaccuratedense,
