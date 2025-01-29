@@ -286,6 +286,22 @@ Please change the data path and evaluation set-up in ./eval/evaluator.py and the
 python ./eval/evaluator.py
 ```
 
+### Dynamic removal
+
+We follow [the KTH dynamic benchmark](https://github.com/KTH-RPL/DynamicMap_Benchmark) for dynamic removal evaluation.
+
+To save the .pcd map, set parameter `save_raw_point_clouds` in yaml file to `true`. A pcd file should be saved in `cad_mesher_ws/cad_mesher_result`.
+
+Create the eval data:
+```
+./export_eval_pcd [folder that you have the output pcd] [method_name_output.pcd] [min_dis to view as the same point]
+```
+
+Print the score:
+```
+python3 scripts/py/eval/evaluate_all.py
+```
+
 ## :rose: Acknowledgements
 
 We thank the authors of the [SLAMesh](https://github.com/lab-sun/SLAMesh) open-source packages:
