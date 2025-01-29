@@ -221,7 +221,7 @@
             process in mesh construction, sliding window-based keyframe
             aggregation and adaptive downsampling strategies are used to
             ensure the uniformity of point cloud. We evaluate the localization
-            and mapping accuracy on five publicly available datasets. Both
+            and mapping accuracy on six publicly available datasets. Both
             qualitative and quantitative results demonstrate the superiority
             of our method compared with the state-of-the-art algorithms.
             The code and introduction video are publicly available at https://yaepiii.github.io/CAD-Mesher.github.io/.
@@ -323,8 +323,113 @@
 
     <div class="columns is-centered ">
       <div class="column is-full-width">
+        <h2 class="title is-3 has-text-centered" style="margin-top: -30px">Localization Evaluation</h2>
+
+        <h3 class="title is-4">LiDAR Odometry Benchmark Evaluation</h3>
+        <div class="content has-text-justified">
+          <p>
+            We select several typical sequences from the KITTI, UrbanLoco, and GroundRobot datasets for localization evaluation.
+            Our CAD-Mesher achieves superior overall performance with 1.38% average translation error and 0.50deg/100m rotation error,
+            which outperforms those point cloud, surfel, mesh-based, and deep learning-based methods. Notice that although PIN-SLAM
+            achieves performance second only to ours, it requires significant GPU resources, a characteristic also shared by SuMa and TRLO.
+          </p>
+        </div>
+
+        <div class="hero-body">
+          <img class="rounded" src="./web/resources/loc_benchmark_kitti" >
+        </div>
+        
+        <div class="content has-text-justified">
+          <p>
+            Our algorithm achieves robust pose estimation through the proposed efficient dynamic filtering strategy.
+            Additionally, our method handles dynamic situations more effectively compared with the dynamic LO TRLO.
+          </p>
+          <p>
+            For the GroundRobot dataset, the usage of sparse channel LiDAR can easily cause significant z-axis drift while presenting a challenge for meshing.
+            Also, our method maintains meshing density, thus extracting more accurate mesh normals, which contributes to point-to-mesh registration, ultimately achieving satisfactory performance.
+          </p>
+        </div>
+        
+        <div class="hero-body">
+          <img class="rounded" src="./web/resources/loc_benchmark_other.png" >
+        </div>
+        
+
+        <h3 class="title is-4">Improvement of the LiDAR Odometry with Our module</h3>
+        <div class="content has-text-justified">
+          <p>
+            First, we conduct an evaluation on KITTI 00~10 sequences using the absolute trajectory error (ATE) and relative trajectory error (RTE) as metrics,
+            with the results presented in Table. III. In general, when the LiDAR odometry is integrated with our module, both ATE and RTE improve.
+            An interesting observation is that the accuracy of the combination primarily decreases in the terms of RTE, while APE improves.
+            We analyze that our registration and mesh fusion strategy enable the current scan to revisit the previous region,
+            functioning as an implicit closed-loop, which may result in a slight decrease in RTE and an improvement in global accuracy.
+            Overall, this integration significantly improves the accuracy of the LiDAR odometry across 11 sequences.
+          </p>
+        </div>
+        <div class="hero-body">
+          <img class="rounded" src="./web/resources/improve_kitti.png" >
+        </div>
+        <div class="content has-text-justified">
+          <p>
+            Furthermore, we use ATE as metric on the UrbanLoco and GroundRobot datasets to analyze the effect of integrating our module for improving localization accuracy.
+            Compared to the KITTI dataset, the improvement in localization accuracy from this integration is more pronounced on these two datasets. Our dynamic removal strategy
+            significantly enhances the naive odometry in high-dynamic urban sequences. Notably, A-LOAM+Ours prevents the degradation of original A-LOAM in UrbanLoco05.
+            We attribute this improvement to our two-stage coarse-to-fine dynamic removal approach. In sparse-channel sequences, the dense and accurate mesh representation
+            also contributes to suppress drift. In summary, our CAD-Mesher mapping module can seamlessly integrate with various LiDAR odometry systems to further improve
+            localization accuracy. Additionally, the integrated system can effectively cope with highly dynamic scenes and sparse-channel LiDAR data.  
+          </p>
+        </div>
+
+        <div class="hero-body">
+          <img class="rounded" src="./web/resources/improve_other.png" >
+        </div>
+
+        <br>
+        <br><br>
+    </div>
+
+  </div>
+</section>
+  
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered ">
+      <div class="column is-full-width">
         <h2 class="title is-3 has-text-centered" style="margin-top: -30px">Meshing Evaluation</h2>
 
+        <h3 class="title is-4">Qualitative</h3>
+        <div class="content has-text-justified">
+          <p>
+            In KITTI05, KITTI07, UrbanLoco05, moving vehicles at intersections leave obvious ghosting in the maps for the other mesh baselines,
+            which impedes following navigation applications. both SLAMesh and ImMesh exhibit noticeable artifacts in their maps due to the absence of a dynamic filtering strategy.
+            SHINE-Mapping and PIN-SLAM also contribute to the dynamic removal by incorporating specifically designed loss items during the training process,
+            while a slight ground ripple effect also ensues. In contrast, our method effectively eliminates dynamic components through the proposed two-stage
+            coarse-to-fine dynamic removal approach while maintaining ground flat. In addition, SHINE-Mapping and PIN-SLAM exhibit significant map misalignment
+            due to cumulative errors in the front-end odometry, while VDBFusion shows severe ground holes, which demonstrates that meshing quality is highly dependent
+            on localization accuracy. As a plug-and-play back-end module, our method achieves more accurate and consistent static maps by refining the pose estimation of the odometry.
+          </p>
+          <p>
+            In the Newer College dataset, low-speed pedestrians leave long ghosting on the mesh maps generated by SLAMesh and ImMesh. VDBFusion, SHINE-Mapping, and PIN-SLAM
+            build relatively accurate maps with filtering dynamic pedestrians, but the ground is missing to varying extents, affecting the completeness of the maps.
+            Our approach also works well for low-speed pedestrians while preserving the integrity of the ground.
+          </p>
+          <p>
+            In the GroundRobot01 sequence, the sparse-channel LiDAR presents a challenge to registration accuracy and meshing quality.
+            Due to the sparsity of the point cloud, both VDBFusion and SLAMesh produce many holes in the ground,
+            compromising the continuity of mesh map. Although SHINEMapping mitigates the impact of sparsity and generates
+            a dense map, it exhibits stratification in the green box due to odometry drift. Although SHINE-Mapping and ImMesh mitigate
+            the impact of sparsity and generate a dense map, it exhibits stratification in the purple box due to odometry drift. PIN-SLAM
+            is less affected, but the dividing lines of ground stratification remain visible. However, our method provides more accurate
+            poses for meshing by refining pose estimation of odometry, thereby ensuring consistency of meshing.
+          </p>
+        </div>
+
+        <div class="hero-body">
+          <img class="rounded" src="./web/resources/qualitative.png" >
+        </div>
+        
         <h3 class="title is-4">Quantitative</h3>
         <div class="content has-text-justified">
           <p>
@@ -333,6 +438,8 @@
             and the proposed consistency test inadvertently filtering out slender poles along with noise. Nevertheless,
             our method achieves the highest F1-Score, demonstrating its overall effectiveness. It is also worth noting that SHINE-Mapping
             is a deep learning-based approach for offline post-processing, which requires extensive training and cannot operate in real time. 
+            Note that our method can run without GPU resources in real-time, while SHINE-Mapping is a deep learning-based
+            approach offline post-processing, and PIN-SLAM \cite{pin-slam} requires extensive GPU consumption.
           </p>
         </div>
         
@@ -341,27 +448,7 @@
         </div>
         
 
-        <h3 class="title is-4">Qualitative</h3>
-        <div class="content has-text-justified">
-          <p>
-            In KITTI07, moving vehicles at intersections leave obvious ghosting in the maps for the other mesh baselines,
-            which impedes following navigation applications. Although VDBFusion migrates dynamic impact using space caving technique,
-            rough ground and residual ghosting still exist. In contrast, our CAD-Mesher effectively filters dynamic objects and ensures
-            map consistency through the proposed two-stage coarse-to-fine dynamic removal strategy. However, few dynamic remnants
-            are still observed in the map, likely related to the chosen resolution and voxel size.
-          </p>
-          <p>
-            In the GroundRobot01 sequence, the sparse-channel LiDAR presents a challenge to registration accuracy and meshing quality.
-            Due to the sparsity of the point cloud, both VDBFusion and SLAMesh produce many holes in the ground,
-            compromising the continuity of mesh map. Although SHINEMapping mitigates the impact of sparsity and generates
-            a dense map, it exhibits stratification in the green box due to odometry drift. However, our method provides more accurate
-            poses for meshing by refining pose estimation of odometry, thereby ensuring consistency of meshing.
-          </p>
-        </div>
-
-        <div class="hero-body">
-          <img class="rounded" src="./web/resources/qualitative.png" >
-        </div>
+        
 
         <br>
         <br><br>
@@ -375,17 +462,72 @@
 
     <div class="columns is-centered ">
       <div class="column is-full-width">
-        <h2 class="title is-3 has-text-centered" style="margin-top: -30px">localization Evaluation</h2>
+        <h2 class="title is-3 has-text-centered" style="margin-top: -30px">Ablation Study</h2>
 
+        <h3 class="title is-4">Dynamic Removal Module Study</h3>
         <div class="content has-text-justified">
           <p>
-            Our CAD-Mesher mapping module can seamlessly integrate with various LiDAR odometry systems to further improve localization accuracy.
-            Additionally, the integrated system can effectively cope with highly dynamic scenes and sparse-channel LiDAR data.
+            As shown in Table. VI, our method outperforms all offline, online, and mesh-based methods across all sequences,
+            achieving excellent associated accuracy. On the KITTI00 and
+            KITTI05 sequences, our method is second only to deep
+            learning-based methods. However, DeFlow suffers from
+            the so-called domain adaptation problem, which is evident in
+            its sharp accuracy reduce when tested on the Argoverse2
+            dataset after being trained on the KITTI dataset. Also, the
+            deep learning-based methods, including SHINE-Mapping
+            and PIN-SLAM, require extensive GPU consumption. In
+            contrast, our method achieves balanced performance across all
+            test sequences in real-time using only a CPU. Additionally, we
+            find that our method performs slightly worse in the terms of
+            SA, which is attributed to misdeletion of some static points
+            during the rough dynamic removal stage.
+          </p>
+        </div>         
+
+        <h3 class="title is-4">Each Component Contribution Study</h3>
+        <div class="content has-text-justified">
+          <p>
+            According to (a)-(d), as the size of the sliding window
+            increases, both the completion and F1-Score of meshing
+            improve, which demonstrates the superiority of our keyframe
+            and sliding window method. However, if the sliding window size is excessively increased, although meshing quality
+            slightly improves, the computational time rises significantly.
+            We consider the improvement is that marginal compared to
+            the significant increase in runtime. Additionally, localization
+            accuracy tends to decrease due to potential interference from
+            the increased noise.
+          </p>
+          <p>
+            Comparing (c), (e), and (f), the employments of continuity
+            test and dynamic removal modules enhance the accuracy of
+            localization. Although this may lead to a slight decrease in
+            meshing quality due to occasionally inadvertent deletions of
+            static points, we devote to implement a convenient, accurate,
+            and dense mesh-based mapping module in SLAM, which
+            needs to balance localization accuracy and meshing quality,
+            different from an offline mesh generator.
+          </p>
+          <p>
+            According to (c), (g), and Fig. 7, employing the adaptive
+            downsampling strategy reduces the system time cost by nearly
+            half while maintaining the meshing quality. Also, more accurate mesh maps further enhance point-to-mesh registration
+            accuracy, resulting in a lower ATE. This highlights the advantage of our adaptive downsampling mechanism in terms of
+            time efficiency.
+          </p>
+          <p>
+            Finally, by comparing (c) and (h), when adaptive keyframe
+            selection is disabled to include all scans, higher recall is
+            achieved due to improved completion of small areas. However,
+            lower precision is observed, likely due to the simultaneous
+            introduction of noise. As discussed in Sec. III-B, the introduction of the adaptive keyframe selection strategy enables more
+            rational input, resulting in a higher overall F1-score, while also
+            reducing system computation time. Additionally, this strategy
+            also improves global localization consistency.
           </p>
         </div>
-        
+
         <div class="hero-body">
-          <img class="rounded" src="./web/resources/localization.png" >
+          <img class="rounded" src="./web/resources/ablation_02.png" >
         </div>
 
         <br>
@@ -394,6 +536,8 @@
 
   </div>
 </section>
+
+
 
 <!-- <section class="section">
   <div class="container is-max-desktop">
