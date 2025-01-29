@@ -4,14 +4,14 @@ The official implementation of CAD-Mesher (A Convenient, Accurate, Dense Mesh-ba
 
 Welcome to our [website](https://yaepiii.github.io/CAD-Mesher/) for more details.
 
-![Video](./web/resources/CAD-Mesher.mp4)
+<a href="{video-url}" title="Link Title"><img src="{image-url}" alt="Alternate Text" /></a>
 
 If you think our work useful for your research, please cite:
 
 ```
-@misc{jia2024trloefficientlidarodometry,
+@misc{jia2024cadmesherconvenientaccuratedense,
       title={CAD-Mesher: A Convenient, Accurate, Dense Mesh-based Mapping Module in SLAM for Dynamic Environments}, 
-      author={Yanpeng Jia, Fengkui Cao, Ting Wang, Yandong Tang. Shiliang Shao, and Lianqing Liu},
+      author={Yanpeng Jia and Fengkui Cao and Ting Wang and Yandong Tang and Shiliang Shao and Lianqing Liu},
       year={2024},
       eprint={2408.05981},
       archivePrefix={arXiv},
@@ -134,38 +134,164 @@ source ~/cad_mesher_ws/src/devel/setup.bash
 
 ## :video_game: How to easily use
 
+### :flashlight: Usage
+
 <details>
-<summary><b>Click here for an usage introduction video!</b></summary>
+<summary><b>Click here for an usage video!</b></summary>
 
 [![CAD-Mesher](./web/resources/intro.mp4)
 
 </details>
 
+<details>
+<summary><b>Click here for an usage introduction!</b></summary>
 
+**1. Modify LiDAR Odometry Cpp**
 
+Usually, A LiDAR odometry will publish the solved poses and the current frame point cloud (e.g., /aft_mapped_to_init and /velodyne_cloud_4 in _A-LOAM_). If not, you need to publish the Odometry topic in the ```nav_msgs::Odometry``` format. And publish point cloud topics in the ```sensor_msgs::PointCloud2`` format. Such as KISS-ICP:
 
-
-
-
-
-This is the repository that contains source code for the [CAD-Mesher website](https://yaepiii.github.io/CAD-Mesher/).
-
-The code is being organized...
-
-When the article is accepted, the code will be published.
-
-If you are interested in our work or use our method in your work, please consider citing the following:
 ```
-@misc{jia2024cadmesherconvenientaccuratedense,
-      title={CAD-Mesher: A Convenient, Accurate, Dense Mesh-based Mapping Module in SLAM for Dynamic Environments}, 
-      author={Yanpeng Jia and Fengkui Cao and Ting Wang and Yandong Tang and Shiliang Shao and Lianqing Liu},
-      year={2024},
-      eprint={2408.05981},
-      archivePrefix={arXiv},
-      primaryClass={cs.RO},
-      url={https://arxiv.org/abs/2408.05981}, 
-}
+odom_publisher_ = pnh_.advertise<nav_msgs::Odometry>("/kiss/odometry", queue_size_);             // odometry topic
+pointcloud_publisher_ = pnh_.advertise<sensor_msgs::PointCloud2>("/mapping_cloud", queue_size_); // point cloud topic
 ```
+
+**2. Modify LiDAR Odometry Launch File**
+
+Then, you should to remap the odometry topic to ```/mapping_odom``` and the point cloud topic to ```/maaping_cloud``` in the launch file in the LiDAR odometry node ```<node> </node>``` TAB. such as KISS-ICP:
+```
+<!-- Odometry node -->
+<node pkg="kiss_icp" type="odometry_node" name="odometry_node" output="screen">
+<!-- ROS params -->
+<remap from="pointcloud_topic" to="$(arg topic)"/>
+<param name="odom_frame" value="$(arg odom_frame)"/>
+<param name="base_frame" value="$(arg base_frame)"/>
+<param name="publish_odom_tf" value="$(arg publish_odom_tf)"/>
+<param name="visualize" value="$(arg visualize)"/>
+<!-- KISS-ICP params -->
+<param name="max_range" value="$(arg max_range)"/>
+<param name="min_range" value="$(arg min_range)"/>
+<param name="deskew" value="$(arg deskew)"/>
+<param name="voxel_size" value="$(arg voxel_size)"/>
+<param name="max_points_per_voxel" value="20"/>
+<param name="initial_threshold" value="2.0"/>
+<param name="min_motion_th" value="0.1" />
+<!-- CAD-Mesher-->
+<remap from="/kiss/odometry" to="/mapping_odom"/>
+<remap from="/mapping_cloud" to="/mapping_cloud"/>
+</node>
+```
+
+**3. Run**
+
+Finally, you can run LiDAR odometry together with our CAD-Mesher meshing module!
+```
+# Teminator 1: run LiDAR odometry
+roslaunch your_lidar_odometry your_lidar_odometry.launch
+# Teminator 2: run CAD-Mesher
+roslaunch cad_mesher xxx.launch
+# Teminator 3: play bag file
+rosbag play your_dataset.bag
+```
+
+</details>
+
+### :books: Datasets
+
+**KITTI**
+
+For the KITTI dataset, you can select two configs:
+
+- kitti_meshing: Focus more on map construction accuracy.
+```
+roslaunch cad_mesher kitti_meshing.launch
+```
+
+- kitti_odometry: Focus more on pose estimation accuracy.
+```
+roslaunch cad_mesher kitti_odometry.launch
+```
+
+**UrbanLoco**
+
+For the UrbanLoco dataset, we just test it on HongKong sequneces and you can run this config:
+```
+roslaunch cad_mesher ulhk.launch
+```
+
+**GroundRobot**
+
+For the GroundRobot dataset, you can run this config:
+```
+roslaunch cad_mesher groundrobot.launch
+```
+
+**Newer College**
+
+For the Newer College dataset, we generate the bag file from an example part of the dataset (Quad) according to [SHINE-Mapping](https://github.com/PRBonn/SHINE_mapping) for the test, you can click here to download (634 MB):
+
+you can run this config:
+```
+roslaunch cad_mesher newer_college.launch
+```
+
+**MaiCity**
+
+For the MaiCity dataset, you can run the following command to start KISS-ICP and Our CAD-Mesher meshing module:
+```
+roslaunch cad_mesher maicity.launch
+```
+
+
+## :bar_chart: Evaluation
+
+CAD-Mesher saves all its report to the path `result_path` given in each **launch** file. If you find ros warning: ` Can not open Report file`, create the folder of `result_path` first.
+
+### Localization accuracy
+
+The file `0x_pred.txt` is the KITTI format path. I use [KITTI odometry evaluation tool](https://github.com/LeoQLi/KITTI_odometry_evaluation_tool) for evaluation:
+
+```
+cd cad_mesher_ws/cad_mesher_result
+git clone https://github.com/LeoQLi/KITTI_odometry_evaluation_tool
+cd KITTI_odometry_evaluation_tool/
+python evaluation.py --result_dir=.. --eva_seqs=0x_pred
+```
+
+The file `pose_evo.txt` is the TUM format path. I use [evo](https://github.com/MichaelGrupp/evo) for evaluation:
+```
+cd cad_mesher_ws/cad_mesher_result
+pip install evo
+evo_ape tum groundtruth.txt pose_evo.txt -a -p
+```
+
+### Meshing accuracy
+
+To save the mesh map, set parameter `save_mesh_map` in yaml file to `true`. A ply file should be saved in `cad_mesher_ws/cad_mesher_result`.
+
+I follow the modified `TanksAndTemples/evaluation` tool by [SLAMesh](https://github.com/lab-sun/SLAMesh) to evaluate the mesh. You can find it here: [TanksAndTemples/evaluation_rjy](https://github.com/RuanJY/TanksAndTemples)
+
+Then compare the mesh with the ground-truth point cloud map:
+```
+cd TanksAndTemples_direct_rjy/python_toolbox/evaluation/
+python run.py \
+--dataset-dir ./data/ground_truth_point_cloud.ply \
+--traj-path ./ \
+--ply-path ./data/your_mesh.ply
+```
+
+or, you can also evaluate following by [SHINE-Mpping](https://github.com/PRBonn/SHINE_mapping):
+
+Please change the data path and evaluation set-up in ./eval/evaluator.py and then run:
+```
+python ./eval/evaluator.py
+```
+
+## :rose: Acknowledgements
+
+We thank the authors of the [SLAMesh](https://github.com/lab-sun/SLAMesh) open-source packages:
+
+- Ruan, Jianyuan and Li, Bo and Wang, Yibo and Sun, Yuxiang, "SLAMesh: Real-time LiDAR Simultaneous Localization and Meshing," in 2023 IEEE International Conference on Robotics and Automation (ICRA), pp. 3546-3552, 2023.
+
 
 # Website License
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
