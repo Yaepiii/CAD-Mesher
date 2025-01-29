@@ -4,7 +4,7 @@ The official implementation of CAD-Mesher (A Convenient, Accurate, Dense Mesh-ba
 
 Welcome to our [website](https://yaepiii.github.io/CAD-Mesher/) for more details.
 
-<a href="{video-url}" title="Link Title"><img src="{image-url}" alt="Alternate Text" /></a>
+[![CAD-Mesher](https://res.cloudinary.com/marcomontalbano/image/upload/v1738145804/video_to_markdown/images/youtube--XmaxL6urYHg-c05b58ac6eb4c4700831b2b3070cd403.jpg)](https://www.youtube.com/watch?v=XmaxL6urYHg "CAD-Mesher")
 
 If you think our work useful for your research, please cite:
 
@@ -139,7 +139,7 @@ source ~/cad_mesher_ws/src/devel/setup.bash
 <details>
 <summary><b>Click here for an usage video!</b></summary>
 
-[![CAD-Mesher](./web/resources/intro.mp4)
+[![Usage Introduction](https://res.cloudinary.com/marcomontalbano/image/upload/v1738145927/video_to_markdown/images/youtube--89fxz1mswRo-c05b58ac6eb4c4700831b2b3070cd403.jpg)](https://www.youtube.com/watch?v=89fxz1mswRo "Usage Introduction")
 
 </details>
 
