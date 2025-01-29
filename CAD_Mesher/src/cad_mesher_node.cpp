@@ -272,21 +272,16 @@ Transf Log::initFirstTransf(){
 
     //2, use first odom
     else if(param.use_odom_prior){
-        if(param.read_offline_pcd){
-            transf_odom_now = state2quat2trans3(g_data.odom_offline[0]);
+        bool first = true;
+        while(imu_msg_buf.empty() && odometry_msg_buf.empty() && ros::ok()){
+            ros::spinOnce();//wait for first imu
+            if(first) ROS_INFO("Waiting for first odom or imu...");
+            usleep(100);
+            first = false;
         }
-        else{
-            bool first = true;
-            while(imu_msg_buf.empty() && odometry_msg_buf.empty() && ros::ok()){
-                ros::spinOnce();//wait for first imu
-                if(first) ROS_INFO("Waiting for first odom or imu...");
-                usleep(100);
-                first = false;
-            }
-            g_data.transf_odom_now = PoseWithCovariance2transf(g_data.odometry_msg_buf.back()->pose); //里程计类型转化为Eigen::Matrix4d类型
-            transf_odom_now = g_data.transf_odom_now;
-            // imu or odometry callback function will update transf_odom_now
-        }
+        g_data.transf_odom_now = PoseWithCovariance2transf(g_data.odometry_msg_buf.back()->pose); //里程计类型转化为Eigen::Matrix4d类型
+        transf_odom_now = g_data.transf_odom_now;
+        // imu or odometry callback function will update transf_odom_now
     }
     
     //3, give a manual T
@@ -357,7 +352,7 @@ void Log::updatePose(Transf & now_slam_transf){
     //savePathEveryStep2Txt(file_loc_path_wrt, path);
 
     //update imu translation and imu bias
-    if(!param.read_offline_pcd && param.imu_feedback){
+    if(param.imu_feedback){
 
         now_imu_transf << imu_rot, imu_pos, 0, 0, 0, 1;
         if(is_first){
@@ -440,7 +435,6 @@ void Log::updatePose(Transf & now_slam_transf){
 void Parameter::initParameter(ros::NodeHandle & nh){
     //<!--  read param  -->
     nh.param("cad_mesher/use_odom_prior", use_odom_prior, false);
-    nh.param("cad_mesher/read_offline_pcd", read_offline_pcd, false);
     nh.param("cad_mesher/imu_feedback", imu_feedback, false);//? TO DO
     nh.param("cad_mesher/file_loc_dataset", file_loc_dataset, std::string("/not_set"));
     nh.param("cad_mesher/dataset", dataset, 6);
@@ -462,7 +456,6 @@ void Parameter::initParameter(ros::NodeHandle & nh){
     nh.param("cad_mesher/point2mesh", point2mesh, false);
     nh.param("cad_mesher/residual_combination", residual_combination, true);
     //<!--  visualize parameter  -->
-    nh.param("cad_mesher/meshing_tsdf", meshing_tsdf, false);
     nh.param("cad_mesher/full_cover", full_cover, false);
     nh.param("cad_mesher/visualisation_type", visualisation_type, 1);
 
@@ -480,8 +473,6 @@ void Parameter::initParameter(ros::NodeHandle & nh){
     nh.param("cad_mesher/variance_map_show", variance_map_show, 0.1);
     nh.param("cad_mesher/variance_min", variance_min, 5.0);
     nh.param("cad_mesher/variance_sensor", variance_sensor, 0.1);
-
-    nh.param("cad_mesher/test_param", test_param, 0.0);
 
     nh.param("cad_mesher/sliding_window_size", sliding_window_size, 5);
     nh.param("cad_mesher/keyframe_adding_distance", keyframe_adding_distance, 0.5);
@@ -535,14 +526,8 @@ Transf CAD_Mesher::getOdom(){
     //before scan registration, obtain initial guess of transformation from motion prior or odometry msg
     Transf odom, dT, odom_now, odom_pre;
     if(param.use_odom_prior){
-        if(param.read_offline_pcd){
-            //use odometry from file
-            int step_offset = 0;
-            g_data.transf_odom_now =  state2quat2trans3(g_data.odom_offline[g_data.step + step_offset]);}
-        else{
-            //use odometry from topic
-            ros::spinOnce();
-        }
+        //use odometry from topic
+        ros::spinOnce();
         odom_now = g_data.transf_odom_now;
         odom_pre = g_data.transf_odom_last;
         dT = odom_pre.inverse() * odom_now;
@@ -789,13 +774,7 @@ void CAD_Mesher::pubTf(){
     Transf transf_now = g_data.T_seq[g_data.step];
     //pub odometry msg
     nav_msgs::Odometry odom_msg;
-    if(param.read_offline_pcd){
-        ros::Time now_time = ros::Time::now();
-        odom_msg.header.stamp = now_time;
-    }
-    else{
-        odom_msg.header.stamp = g_data.pcl_msg_buff.header.stamp;
-    }
+    odom_msg.header.stamp = g_data.pcl_msg_buff.header.stamp;
     odom_msg.pose = transf2PoseWithCovariance(transf_now);
     odom_pub.publish(odom_msg);
     //pub tf

@@ -17,13 +17,12 @@ public:
 
     double correction_x{0}, correction_y{0}, correction_z{0},
     correction_roll_degree{0}, correction_pitch_degree{0}, correction_yaw_degree{0};
-    double test_param;
     double eigen_1, eigen_2, eigen_3;//PCA
 
     std::string file_loc_report, file_loc_dataset, seq;
     bool three_dir;//features fixed
-    bool use_odom_prior, read_offline_pcd, cross_overlap, grt_available, imu_feedback,
-            meshing_tsdf, full_cover, save_raw_point_clouds, point2mesh{true},
+    bool use_odom_prior, cross_overlap, grt_available, imu_feedback,
+            full_cover, save_raw_point_clouds, point2mesh{true},
             residual_combination{true}, save_mesh_map;
     int visualisation_type;
     int num_margin_old_cell;
@@ -81,7 +80,6 @@ public:
     Transf transf_odom_last  = Eigen::MatrixXd::Identity(4, 4),
            transf_odom_now   = Eigen::MatrixXd::Identity(4, 4),//used to calculate incremental transformation between two odometry frames
            transf_slam       = Eigen::MatrixXd::Identity(4, 4);
-    std::vector<State> odom_offline;//not used
     std::deque<nav_msgs::OdometryConstPtr> odometry_msg_buf;
     //imu
     std::queue<sensor_msgs::ImuConstPtr> imu_msg_buf;

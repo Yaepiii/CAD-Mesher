@@ -1,9 +1,7 @@
 cad_mesher:
   #read param
   use_sim_time: true
-  grt_available: false 
   use_odom_prior: true 
-  read_offline_pcd: false
   dataset: 1  # Means using KITTI dataset
   max_steps: 10000
   save_mesh_map: true
@@ -18,7 +16,6 @@ cad_mesher:
   point2mesh: true
   residual_combination: true
   #visualize parameter
-  meshing_tsdf: false
   full_cover: true  # so that there is no gap between cells.
   visualisation_type: 3
   #gp param

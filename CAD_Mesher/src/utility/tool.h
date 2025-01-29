@@ -44,8 +44,6 @@ pcl::PointCloud<pcl::PointXYZ> matrix3D2pcl(const PointMatrix & points);
 void eigen2pcl();
 geometry_msgs::PoseWithCovariance transf2PoseWithCovariance(Transf transf);
 Transf PoseWithCovariance2transf(geometry_msgs::PoseWithCovariance pose);
-bool readKitti(const std::string & file_dataset, const std::string& seq, int line_num, int dataset,
-               pcl::PointCloud<pcl::PointXYZ> & laser_cloud);
 
 //transformation
 Point trans3Dpoint(int x, int y, int z, const Transf& transf);

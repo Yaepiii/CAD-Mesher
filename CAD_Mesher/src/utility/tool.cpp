@@ -187,44 +187,6 @@ Transf PoseWithCovariance2transf(geometry_msgs::PoseWithCovariance pose) {
 
     return transf;
 }
-bool readKitti(const std::string & file_dataset, const std::string & seq, int line_num, int dataset,
-               pcl::PointCloud<pcl::PointXYZ> & laser_cloud){//partially refer to A-LOAM
-    std::stringstream bin_point_cloud_path;
-    if(dataset == 1){//kitti
-        bin_point_cloud_path << file_dataset << seq << "/velodyne/" << std::setfill('0') << std::setw(6) << line_num << ".bin";
-    }
-    else if(dataset == 2){//mai_city
-        bin_point_cloud_path << file_dataset << seq << "/velodyne/" << std::setfill('0') << std::setw(5) << line_num << ".bin";
-    }
-    std::cout<<std::setprecision(7)<<setiosflags(std::ios::fixed);
-    std::ifstream bin_point_cloud_file(bin_point_cloud_path.str(), std::ifstream::in | std::ifstream::binary);
-    if(!bin_point_cloud_file.good()){
-        return false;
-    }
-    bin_point_cloud_file.seekg(0, std::ios::end);
-    const size_t num_elements = bin_point_cloud_file.tellg() / sizeof(float);
-    bin_point_cloud_file.seekg(0, std::ios::beg);
-    std::vector<float> lidar_data(num_elements);
-    bin_point_cloud_file.read(reinterpret_cast<char*>(&lidar_data[0]), num_elements * sizeof(float));
-    std::cout << "totally " << int(lidar_data.size() / 4.0) << " points in this lidar frame \n";
-
-    std::vector<Eigen::Vector3d> lidar_points;
-    std::vector<float> lidar_intensities;
-    for (std::size_t i = 0; i < lidar_data.size(); i += 4)
-    {
-        lidar_points.emplace_back(lidar_data[i], lidar_data[i+1], lidar_data[i+2]);
-        lidar_intensities.push_back(lidar_data[i+3]);
-
-        pcl::PointXYZ point;
-        point.x = lidar_data[i];
-        point.y = lidar_data[i + 1];
-        point.z = lidar_data[i + 2];
-        //if(point.z > -2.5){//there are some underground outliers in kitti dataset, remove them
-            laser_cloud.push_back(point);
-        //}
-    }
-    return true;
-}
 
 //transformation
 Point trans3Dpoint(int x, int y, int z, const Transf& transf){

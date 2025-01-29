@@ -1,9 +1,7 @@
 cad_mesher:
   #read param
   use_sim_time: true
-  grt_available: false 
   use_odom_prior: true 
-  read_offline_pcd: false
   dataset: 5 # Means using GroundRobot dataset
   max_steps: 10000
   save_mesh_map: true
@@ -17,7 +15,6 @@ cad_mesher:
   point2mesh: true
   residual_combination: true
   #visualize parameter
-  meshing_tsdf: false
   full_cover: true
   visualisation_type: 4
   #gp param
@@ -31,8 +28,6 @@ cad_mesher:
   variance_map_show: 0.50
   variance_min: 1.36
   variance_sensor: 0.02
-  
-  test_param:  0
   
   sliding_window_size: 10
   keyframe_adding_distance: 0.0

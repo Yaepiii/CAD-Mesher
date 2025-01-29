@@ -137,35 +137,26 @@ bool getPointCloud(PointMatrix & points_result, pcl::PointCloud<pcl::PointXYZ> &
     PointMatrix points_raw, points_filted;
     int data_set = param.dataset;//1  kitti, 2 maicity,
 
-    //read
-    if(param.read_offline_pcd) {
-        if(!readKitti(param.file_loc_dataset, param.seq, g_data.step, data_set,  *pcl_raw_ptr)){
-            std::cout << "No more PCD file!" << std::endl;
-            return false;
-        }
+    ros::spinOnce();
+    while(ros::ok() && g_data.pcl_submap_ptr->points.empty()){
+        //ROS_INFO("NO pcl scan, Wait 2 second...");
+        usleep(100);
+        ros::spinOnce();
+    }
+    bool first = true;
+    while(ros::ok() && g_data.pcl_submap_ptr->empty()){
+        if(first) ROS_INFO("Waiting for new pcl scan in get point cloud...");
+        usleep(1);
+        ros::spinOnce();
+        first = false;
+    }
+    if(!g_data.pcl_submap_ptr->empty()){
+        // pcl::fromROSMsg(g_data.pcl_msg_buff_deque.front(), *pcl_raw_ptr);
+        *pcl_raw_ptr = *g_data.pcl_submap_ptr;
+        get_laser_time = g_data.pcl_msg_buff.header.stamp.toSec();
     }
     else{
-        ros::spinOnce();
-        while(ros::ok() && g_data.pcl_submap_ptr->points.empty()){
-            //ROS_INFO("NO pcl scan, Wait 2 second...");
-            usleep(100);
-            ros::spinOnce();
-        }
-        bool first = true;
-        while(ros::ok() && g_data.pcl_submap_ptr->empty()){
-            if(first) ROS_INFO("Waiting for new pcl scan in get point cloud...");
-            usleep(1);
-            ros::spinOnce();
-            first = false;
-        }
-        if(!g_data.pcl_submap_ptr->empty()){
-            // pcl::fromROSMsg(g_data.pcl_msg_buff_deque.front(), *pcl_raw_ptr);
-            *pcl_raw_ptr = *g_data.pcl_submap_ptr;
-            get_laser_time = g_data.pcl_msg_buff.header.stamp.toSec();
-        }
-        else{
-            return false;
-        }
+        return false;
     }
 
     //voxel_filter_size filter
