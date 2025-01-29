@@ -1,0 +1,50 @@
+cad_mesher:
+  #read param
+  use_sim_time: true
+  grt_available: false 
+  use_odom_prior: true 
+  read_offline_pcd: false
+  dataset: 1
+  max_steps: 10000
+  save_mesh_map: true
+  #register param
+  range_max: 60
+  range_min: 3.0
+  register_times: 5
+  cross_overlap: true
+  cross_cell_overlap_length: 1
+  num_margin_old_cell: 500
+  point2mesh: true
+  residual_combination: true
+  #visualize parameter
+  meshing_tsdf: false
+  full_cover: true
+  visualisation_type: 3
+  #gp param
+  num_thread: 15 #8
+  grid: 1.5
+  min_points_num_to_gp: 9
+  num_test: 10 #一个体素内GP点的数量 6
+  
+  variance_register: 0.60
+  variance_map_update: 0.50
+  variance_map_show: 0.20
+  variance_min: 1.36
+  variance_sensor: 0.02
+  
+  test_param:  0
+  
+  sliding_window_size: 5
+  keyframe_adding_distance: 0.5
+  keyframe_adding_angle: 0.3
+  scan_number: 64
+  use_adaptive_downsample: true
+  use_curvature: true
+  use_curvature_weight: false
+  use_ground_contraint: true
+  skip_map_glb_pub: 5
+  ground_number_threshold: 15
+
+
+
+

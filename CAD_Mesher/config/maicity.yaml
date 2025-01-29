@@ -1,0 +1,54 @@
+cad_mesher:
+  #Configuration used in the experiment Meshing Evaluation with the Mai City dataset
+  #read param
+  use_sim_time: true 
+  grt_available: false 
+  use_odom_prior: true 
+  read_offline_pcd: false 
+  dataset: 2 # Means using Maicity dataset
+  max_steps: 10000
+  save_mesh_map: true
+  #register param
+  range_max: 100
+  range_min: 1.2
+  register_times: 2
+  cross_overlap: true
+  cross_cell_overlap_length: 0
+  num_margin_old_cell: 500
+  point2mesh: true
+  residual_combination: true
+  #visualize parameter
+  meshing_tsdf: false
+  full_cover: true
+  visualisation_type: 3
+  #gp param
+  num_thread: 15
+  grid: 1.5
+  min_points_num_to_gp: 3
+  num_test: 12
+  
+  variance_register: 0.37
+  variance_map_update: 1.00
+  variance_map_show: 0.10
+  variance_min: 1.36
+  variance_sensor: 0.015
+  
+  test_param:  0
+
+  sliding_window_size: 10
+  keyframe_adding_distance: 0.0
+  keyframe_adding_angle: 0.0
+  scan_number: 64
+  use_adaptive_kd: false
+  use_curvature: false
+  use_curvature_weight: false
+  use_global_ground_contraint: false
+  use_local_ground_contraint: false
+  skip_map_glb_pub: 5
+  ground_number_threshold: 10
+  use_dynamic_removal: false
+  stable_threshold: 0.97
+  p_hit: 0.7
+  p_miss: 0.4
+
+

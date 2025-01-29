@@ -1,0 +1,51 @@
+<launch>
+    <arg name="seq" default = "/00" />
+    <arg name="param" default = "" /> <!-- param is used for tuning "$(arg param)" -->
+    <arg name="data_path" default = " " />
+    <arg name="result_path" default = "$(find cad_mesher)/../../cad_mesher_result/newer_college/kitti" />
+
+    <rosparam file="$(find cad_mesher)/config/newer_college.yaml" command="load" />
+    <!-- ROS paramaters -->
+    <arg name="bagfile" default=""/>
+    <arg name="visualize" default="true"/>
+    <arg name="odom_frame" default="odom"/>
+    <arg name="base_frame" default=""/>
+    <arg name="topic" default="/os1_cloud_node/points"/>
+    <arg name="publish_odom_tf" default="false"/>
+
+    <!-- KISS-ICP paramaters -->
+    <arg name="deskew" default="false"/>
+    <arg name="max_range" default="100.0" />
+    <arg name="min_range" default="5.0" />
+    <arg name="voxel_size" default="" />
+
+    <!-- Odometry node -->
+    <node pkg="kiss_icp" type="odometry_node" name="odometry_node" output="screen">
+        <!-- ROS params -->
+        <remap from="pointcloud_topic" to="$(arg topic)"/>
+        <param name="odom_frame" value="$(arg odom_frame)"/>
+        <param name="base_frame" value="$(arg base_frame)"/>
+        <param name="publish_odom_tf" value="$(arg publish_odom_tf)"/>
+        <param name="visualize" value="$(arg visualize)"/>
+        <!-- KISS-ICP params -->
+        <param name="max_range" value="$(arg max_range)"/>
+        <param name="min_range" value="$(arg min_range)"/>
+        <param name="deskew" value="$(arg deskew)"/>
+        <param name="voxel_size" value="$(arg voxel_size)"/>
+        <param name="max_points_per_voxel" value="20"/>
+        <param name="initial_threshold" value="2.0"/>
+        <param name="min_motion_th" value="0.1" />
+        <!-- CAD-Mesher-->
+        <remap from="/kiss/odometry" to="/mapping_odom"/>
+        <remap from="/mapping_cloud" to="/mapping_cloud"/>
+    </node>
+
+    <node pkg="cad_mesher" type="cad_mesher" name="cad_mesher" output="screen">
+        <param name="seq" value="$(arg seq)"/>
+        <param name="file_loc_report"  value="$(arg result_path)"/>
+        <param name="file_loc_dataset" value="$(arg data_path)"/>
+    </node>
+
+    <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find cad_mesher)/config/rviz/cad_mesher.rviz" required="false" respawn="true" /> -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find cad_mesher)/config/rviz/ncd_video.rviz" required="false" respawn="true" />
+</launch>
