@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="CAD-Mesher: A Convenient, Accurate, Dense Mesh-based Mapping Module in SLAM for Dynamic Environments">
+  <meta name="keywords" content="CAD-Mesher: A Convenient, Accurate, Dense Mesh-based Mapping Module in SLAM for Dynamic Environments">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CAD-Mesher</title>
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="./web/static/css/bootstrap-4.4.1.css">
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+  
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  
+  
+  
+  <link rel="stylesheet" href="./web/static/css/bulma.min.css">
+  <link rel="stylesheet" href="./web/static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./web/static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./web/static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./web/static/css/index.css">
+  <link rel="icon" href="./web/static/images/logo.webp">
+
+  
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./web/static/js/fontawesome.all.min.js"></script>
+  <script src="./web/static/js/bulma-carousel.min.js"></script>
+  <script src="./web/static/js/bulma-slider.min.js"></script>
+  <script src="./web/static/js/index.js"></script>
+  <script src="./web/static/js/app.js"></script>
+  <script src="./web/static/js/video_comparison.js"></script>
+
+  <link rel="stylesheet" href="./web/static/css/dics.original.css">
+  <script src="./web/static/js/event_handler.js"></script>
+  <script src="./web/static/js/dics.original.js"></script>
+</head>
+<body>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title" style="margin-bottom: 0"><img src="web/static/images/logo.png" width="80">   <strong>CAD-Mesher</strong></h1>
+          <br>
+          <h2 class="title is-3 publication-title" style="margin-top: 0; margin-bottom: 0">A Convenient, Accurate, Dense Mesh-based Mapping Module in SLAM for Dynamic Environments</h2>
+          <!-- <br> -->
+          <div class="tmm2025" style="margin-top: 10px; margin-bottom: 20px;">
+            <h2 class="title is-4">IEEE Trans. on MultiMedia 2025</h2>
+          </div>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://yaepiii.github.io/">Yanpeng Jia</a><sup>1,2</sup></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="author-block">
+              <a href="https://people.ucas.edu.cn/~KFC">Fengkui Cao</a><sup>1*</sup></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="author-block">
+              <a href="https://people.ucas.ac.cn/~siawangting1">Ting Wang</a><sup>1*</sup>
+            </span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="author-block">
+              <a href="https://people.ucas.edu.cn/~ytang">Yandong Tang</a><sup>1</sup>
+            </span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="author-block">
+              <a href="https://people.ucas.edu.cn/~shaoshiliang">Shiliang Shao</a><sup>1</sup>&nbsp;&nbsp;&nbsp;&nbsp;
+            </span>
+            <span class="author-block">
+              <a href="https://people.ucas.edu.cn/~lianqingliu">Lianqing Liu</a><sup>1</sup>
+            </span>
+          </div>
+          <!-- <br> -->
+          <div class="column is-full_width">
+            <h2 class="is-size-6">* corresponding author</h2>
+          </div>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Shenyang Institute of Automation</span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="author-block"><sup>2</sup>University of Chinese Academy of Sciences</span>&nbsp;&nbsp;&nbsp;&nbsp;
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2408.05981"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+          
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/Yaepiii/CAD-Mesher"
+                   class="external-link button is-normal is-rounded is-dark disabled">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span> 
+            
+              <span class="link-block">
+                <a href="https://drive.google.com/drive/folders/110Hko3zPcDmY0_bnZdXxJXJKe6wr3t10?usp=sharing"
+                   class="external-link button is-normal is-rounded is-dark disabled">
+                  <span class="icon">
+                    <i class="fas fa-database"></i>
+                  </span>
+                  <span>Data</span>
+                  </a>
+              </span>  
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- <section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <div style="width: 70%; height: 70%; margin: 0 auto; display: flex; justify-content: center; align-items: center;">
+        <video id="teaser" autoplay muted loop style="width: 100%; height: 100%;">
+          <source src="web/resources/teaser_nerf-on-the-go.mp4" type="video/mp4">
+        </video>
+      </div> -->
+      <!-- <img class="rounded" src="./media/nice-slam/teaser.png" > -->
+      <!-- <br><br><br>
+      <h2 class="subtitle has-text-centered">
+        <strong style="font-size: 0.9em;">NeRF <em>On-the-go</em></strong> enables novel view synthesis in in-the-wild scenes from casually captured images.
+    </h2>
+    </div>
+  </div>
+</section> -->
+
+<!-- <section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+      
+          <video class="video" width="80%" id="xyalias6" loop playsinline autoplay muted src="web/resources/yard_high_pj.mp4" onplay="resizeAndPlay(this)" style="height: 0px;"></video>
+          <canvas height=0 class="videoMerge" id="xyalias6Merge"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+<!--
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Reconstructions</h2>
+
+        <div class="embed-responsive embed-responsive-16by9">
+
+          <iframe style="clip-path: inset(1px 1px)" src="https://sketchfab.com/playlists/embed?collection=abee3cc1a7a7436c804f2bd3aadc2acd" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen" mozallowfullscreen="true" webkitallowfullscreen="true" width="100%" height="100%" frameborder="0"></iframe>
+        </div>
+        
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+-->
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3" style="margin-top: -30px">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Most LiDAR odometry and SLAM systems construct maps in point clouds, which are discrete and sparse when
+            zoomed in, making them not directly suitable for navigation.
+            Mesh maps represent a consecutive and dense map format with
+            low memory consumption, which can approximate complex structures with simple elements, attracting significant attention of researchers in recent years. However, most implementations operate
+            under a static environment assumption. In effect, moving objects
+            cause ghosting, potentially degrading the quality of meshing. To
+            address these issues, we propose a plug-and-play meshing module
+            adapting to dynamic environments, which can be easily integrated
+            with various LiDAR odometry to generally improve the pose
+            estimation accuracy of odometry. In our meshing module, a novel
+            two-stage coarse-to-fine dynamic removal method is designed to
+            effectively filter dynamic objects, generating consistent, accurate,
+            and dense mesh maps. Additionally, conducive to Gaussian
+            process in mesh construction, sliding window-based keyframe
+            aggregation and adaptive downsampling strategies are used to
+            ensure the uniformity of point cloud. We evaluate the localization
+            and mapping accuracy on five publicly available datasets. Both
+            qualitative and quantitative results demonstrate the superiority
+            of our method compared with the state-of-the-art algorithms.
+            The code and introduction video are publicly available at https://yaepiii.github.io/CAD-Mesher.github.io/.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+    
+    <!-- <div class="container is-max-desktop">
+      <div class="hero-body">
+        <div style="width: 70%; height: 70%; margin: 0 auto; display: flex; justify-content: center; align-items: center;">
+          <video id="teaser" autoplay muted loop style="width: 100%; height: 100%;">
+            <source src="web/resources/CAD-Mesher.mp4" type="video/mp4">
+          </video>
+        </div>-->
+        <!-- <img class="rounded" src="./media/nice-slam/teaser.png" > -->
+        <!-- <br><br><br>
+        <h2 class="subtitle has-text-centered">
+          <strong style="font-size: 0.9em;">CAD-Mesher</strong> can easily integrating with various LiDAR odometry to further improve localization accuracy, 
+          filtering dynamic objects and generating a accurate, consecutive, and dense mesh map.
+        </h2>
+      </div>
+    </div> -->
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/XmaxL6urYHg?si=fuf-4vQgFAIn68aJ"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+        <br><br><br>
+        <h2 class="subtitle has-text-centered">
+            <strong style="font-size: 0.9em;">CAD-Mesher</strong> can easily integrating with various LiDAR odometry to further improve localization accuracy, 
+            filtering dynamic objects and generating a accurate, consecutive, and dense mesh map.
+        </h2>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <!-- Method. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3" style="margin-top: -20px">Method</h2>
+
+        <div style="width: 100%; margin: 0 auto; display: flex; justify-content: center;">
+          <img src="./web/resources/pipeline.png" style="width: 150%;">
+        </div>
+        <div class="content has-text-justified">
+          <p style="margin-top: 30px">
+            As a mapping module in SLAM, the system receives the raw point in the LiDAR coordinate system at current time, and the pose transformation
+            from the LiDAR coordinate system to the global coordinate system estimated by the odometryas the system input.
+            The keyframe, dropped by the proposed adaptive selection mechanism, is added to the database after visibility-based coarse dynamic removal.
+            The keyframes within the sliding window are subsequently aggregated and converted to the world coordinate system W, then uniformly
+            sampled by the adaptive downsampling strategy to enhance system efficiency. Continuity test is utilized to remove outliers and noise.
+            The remaining points are divided into voxels, GP-based meshing is then conducted. In the optimization component,
+            the pose estimated by the odometry is used as a prior for point-to-mesh registration, aligning the current
+            scan to the global map and outputting the finer pose. Finally, after fine dynamic removal using the voxel-based probabilistic
+            method, the current mesh is fused into the global mesh map for publication.
+        </div>
+
+      </div>
+    </div>
+    <!--/ Animation. -->
+
+  </div>
+</section>
+
+
+<!-- <section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered ">
+      <div class="column is-full-width">
+        <h2 class="title is-3 has-text-centered" style="margin-top: -30px"><i>On-the-go</i> Dataset</h2>
+        <video class="video" controls muted autoplay loop src="web/resources/on-the-go.mp4"></video>
+        <div class="content has-text-justified">
+          <p>
+            To rigorously evaluate our approach in real-world settings, we captured a dataset that contains 12 casually captured sequences, including 10 outdoor and 2 indoor scenes. 
+            We name this dataset On-the-go dataset. This dataset features a wide range of dynamic objects including pedestrians, cyclists, strollers, toys, cars, robots, and trams, along with diverse occlusion ratios ranging from 5% to 30%.
+
+          </p>
+        </div>
+        
+     
+    </div>
+
+  </div>
+</section> -->
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered ">
+      <div class="column is-full-width">
+        <h2 class="title is-3 has-text-centered" style="margin-top: -30px">Meshing Evaluation</h2>
+
+        <h3 class="title is-4">Quantitative</h3>
+        <div class="content has-text-justified">
+          <p>
+            Our method achieves the highest reconstruction precision in both datasets, although its recall are not as high as that of SHINE-Mapping.
+            We attribute this discrepancy to our coarse dynamic removal method inadvertently removing some static points,
+            and the proposed consistency test inadvertently filtering out slender poles along with noise. Nevertheless,
+            our method achieves the highest F1-Score, demonstrating its overall effectiveness. It is also worth noting that SHINE-Mapping
+            is a deep learning-based approach for offline post-processing, which requires extensive training and cannot operate in real time. 
+          </p>
+        </div>
+        
+        <div class="hero-body">
+          <img class="rounded" src="./web/resources/quantitative.png" >
+        </div>
+        
+
+        <h3 class="title is-4">Qualitative</h3>
+        <div class="content has-text-justified">
+          <p>
+            In KITTI07, moving vehicles at intersections leave obvious ghosting in the maps for the other mesh baselines,
+            which impedes following navigation applications. Although VDBFusion migrates dynamic impact using space caving technique,
+            rough ground and residual ghosting still exist. In contrast, our CAD-Mesher effectively filters dynamic objects and ensures
+            map consistency through the proposed two-stage coarse-to-fine dynamic removal strategy. However, few dynamic remnants
+            are still observed in the map, likely related to the chosen resolution and voxel size.
+          </p>
+          <p>
+            In the GroundRobot01 sequence, the sparse-channel LiDAR presents a challenge to registration accuracy and meshing quality.
+            Due to the sparsity of the point cloud, both VDBFusion and SLAMesh produce many holes in the ground,
+            compromising the continuity of mesh map. Although SHINEMapping mitigates the impact of sparsity and generates
+            a dense map, it exhibits stratification in the green box due to odometry drift. However, our method provides more accurate
+            poses for meshing by refining pose estimation of odometry, thereby ensuring consistency of meshing.
+          </p>
+        </div>
+
+        <div class="hero-body">
+          <img class="rounded" src="./web/resources/qualitative.png" >
+        </div>
+
+        <br>
+        <br><br>
+    </div>
+
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered ">
+      <div class="column is-full-width">
+        <h2 class="title is-3 has-text-centered" style="margin-top: -30px">localization Evaluation</h2>
+
+        <div class="content has-text-justified">
+          <p>
+            Our CAD-Mesher mapping module can seamlessly integrate with various LiDAR odometry systems to further improve localization accuracy.
+            Additionally, the integrated system can effectively cope with highly dynamic scenes and sparse-channel LiDAR data.
+          </p>
+        </div>
+        
+        <div class="hero-body">
+          <img class="rounded" src="./web/resources/localization.png" >
+        </div>
+
+        <br>
+        <br><br>
+    </div>
+
+  </div>
+</section>
+
+<!-- <section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered ">
+      <div class="column is-full-width">
+        <h2 class="title is-3 has-text-centered" style="margin-top: -30px">Additional Results</h2>
+
+        <h3 class="title is-4">Comparison with RobustNeRF</h3>
+        <div class="content has-text-justified">
+          <p>
+            RobustNeRF employs hard thresholding to eliminate distractors, which makes it sensitive to the threshold value and may not generalize effectively in complex scenes.
+            Our method is more robust to the distractors and can handle more complicated scenes.
+
+          </p>
+        </div>
+        
+        <div class="content has-text-centered" style="width: 80%; display: flex; justify-content: center; align-items: center">
+          <video class="video" width="100%" id="xyalias1" loop playsinline autoplay muted src="web/resources/bellevue_pj.mp4" onplay="resizeAndPlay(this)" style="height: 0px;"></video>
+          <canvas height=0 class="videoMerge" id="xyalias1Merge" style="width: 80%;"></canvas>
+        </div>
+        
+        <div class="content has-text-centered" style="width: 80%; display: flex; justify-content: center; align-items: center">
+          <video class="video" width="100%" id="xyalias2" loop playsinline autoplay muted src="web/resources/rigi_pj.mp4" onplay="resizeAndPlay(this)" style="height: 0px;"></video>
+          <canvas height=0 class="videoMerge" id="xyalias2Merge" style="width: 80%;"></canvas>
+        </div>
+        
+
+        <h3 class="title is-4">Comparison with NeRF-W</h3>
+        <div class="content has-text-justified">
+          <p>
+            Compare with NeRF-W, our method can handle more complicated scenes with higher occlusion ratio. 
+            Furthermore, it does not depend on transient embedding, which adds extra complexity and can potentially result in the loss of high-frequency details.
+          </p>
+        </div>
+
+        <div class="content has-text-centered" style="width: 80%; display: flex; justify-content: center; align-items: center">
+          <video class="video" width="100%" id="xyalias9" loop playsinline autoplay muted src="web/resources/bahnhof_pj.mp4" onplay="resizeAndPlay(this)" style="height: 0px;"></video>
+          <canvas height=0 class="videoMerge" id="xyalias9Merge" style="width: 80%;"></canvas>
+        </div>
+        <div class="content has-text-centered" style="width: 80%; display: flex; justify-content: center; align-items: center">
+          <video class="video" width="100%" id="xyalias10" loop playsinline autoplay muted src="web/resources/polybahn_pj.mp4" onplay="resizeAndPlay(this)" style="height: 0px;"></video>
+          <canvas height=0 class="videoMerge" id="xyalias10Merge" style="width: 80%;"></canvas>
+        </div>
+
+        <div class="content has-text-justified">
+          <p>
+            Here, we show more comparisons with NeRF-W and RobustNeRF. 
+          </p>
+        </div>
+
+        <div class="container">
+          <ul class="nav nav-tabs nav-fill nav-justified" id="object-scale-recon">
+              <li class="nav-item">
+                <a class="nav-link active" onclick="objectSceneEvent(0)">station</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" onclick="objectSceneEvent(1)">patio-high</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" onclick="objectSceneEvent(2)">arc de triomphe</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" onclick="objectSceneEvent(3)">drone</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" onclick="objectSceneEvent(4)">tree</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" onclick="objectSceneEvent(5)">mountain</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" onclick="objectSceneEvent(6)">spot</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" onclick="objectSceneEvent(7)">corner</a>
+              </li>
+          </ul>
+          <div class="b-dics">
+              <img src="web/resources/self/half_bahnhof/nerfw.png" alt="NeRF-W">
+              <img src="web/resources/self/half_bahnhof/robust.png" alt="RobustNeRF">
+              <img src="web/resources/self/half_bahnhof/ours.png" alt="NeRF On-the-go(ours)">
+              <img src="web/resources/self/half_bahnhof/gt.png" alt="GT">
+          </div>
+        </div>
+
+        <br>
+        <br><br>
+    </div>
+
+  </div>
+</section> -->
+
+<!-- <section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@InProceedings{Ren2024NeRF,
+    title={NeRF On-the-go: Exploiting Uncertainty for Distractor-free NeRFs in the Wild},
+    author={Ren, Weining and Zhu, Zihan and Sun, Boyang and Chen, Jiaqi and Pollefeys, Marc and Peng, Songyou},
+    booktitle={IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+    year={2024},
+}</code></pre>
+  </div>
+</section> -->
+
+<!-- <section class="section" id="Acknowledgements">
+  <div class="container is-max-desktop content">
+    <h2 class="title">Acknowledgements</h2>
+    We thank the Max Planck ETH Center for Learning Systems (CLS) for supporting Songyou Peng. 
+We also thank Yiming Zhao and Clément Jambon for helpful discussions.
+  </div>
+</section> -->
+
+<!-- <section class="section" id="References">
+  <div class="container is-max-desktop content">
+
+        <h3 class="title is-4">References</h3>
+        <div class="content has-text-justified">
+          <ul>
+            <li>
+              <a href="https://robustnerf.github.io/" target="_blank">RobustNeRF: Ignoring Distractors with Robust Losses</a>
+            </li>
+            <li>
+              <a href="https://nerf-w.github.io/" target="_blank">NeRF in the Wild: Neural Radiance Fields for Unconstrained Photo Collections</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+</section> -->
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+            This webpage template is from <a href="https://github.com/autonomousvision/mip-splatting">mip-splatting</a>, which is built upon <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>. 
+            We sincerely thank <a href="https://keunhong.com/">Keunhong Park</a> for developing and open-sourcing this template. 
+          </p>
+        </div>
+      </div>
+          <p></p>
+        </div>
+      </div>
+</footer>
+
+</body>
+</html>
