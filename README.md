@@ -148,7 +148,7 @@ source ~/cad_mesher_ws/src/devel/setup.bash
 
 **1. Modify LiDAR Odometry Cpp**
 
-Usually, A LiDAR odometry will publish the solved poses and the current frame point cloud (e.g., /aft_mapped_to_init and /velodyne_cloud_4 in _A-LOAM_). If not, you need to publish the Odometry topic in the ```nav_msgs::Odometry``` format. And publish point cloud topics in the ```sensor_msgs::PointCloud2`` format. Such as KISS-ICP:
+Usually, aLiDAR odometry will publish the solved poses and the current frame point cloud (e.g., /aft_mapped_to_init and /velodyne_cloud_4 in _A-LOAM_). If not, you need to publish the Odometry topic in the ```nav_msgs::Odometry``` format. And publish point cloud topics in the ```sensor_msgs::PointCloud2`` format. Such as KISS-ICP:
 
 ```
 odom_publisher_ = pnh_.advertise<nav_msgs::Odometry>("/kiss/odometry", queue_size_);             // odometry topic
