@@ -152,7 +152,7 @@ Usually, aLiDAR odometry will publish the solved poses and the current frame poi
 
 ```
 odom_publisher_ = pnh_.advertise<nav_msgs::Odometry>("/kiss/odometry", queue_size_);             // odometry topic
-pointcloud_publisher_ = pnh_.advertise<sensor_msgs::PointCloud2>("/mapping_cloud", queue_size_); // point cloud topic
+pointcloud_publisher_ = pnh_.advertise<sensor_msgs::PointCloud2>("/kiss/pointcloud", queue_size_); // point cloud topic
 ```
 
 **2. Modify LiDAR Odometry Launch File**
@@ -177,7 +177,7 @@ Then, you should to remap the odometry topic to ```/mapping_odom``` and the poin
 <param name="min_motion_th" value="0.1" />
 <!-- CAD-Mesher-->
 <remap from="/kiss/odometry" to="/mapping_odom"/>
-<remap from="/mapping_cloud" to="/mapping_cloud"/>
+<remap from="/kiss/pointcloud" to="/mapping_cloud"/>
 </node>
 ```
 
