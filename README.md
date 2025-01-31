@@ -279,7 +279,7 @@ python run.py \
 --ply-path ./data/your_mesh.ply
 ```
 
-or, you can also evaluate following by [SHINE-Mpping](https://github.com/PRBonn/SHINE_mapping):
+Or, you can also evaluate following by [SHINE-Mpping](https://github.com/PRBonn/SHINE_mapping):
 
 Please change the data path and evaluation set-up in ./eval/evaluator.py and then run:
 ```
