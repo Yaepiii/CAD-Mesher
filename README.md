@@ -22,7 +22,7 @@ If you think our work useful for your research, please cite:
 
 ## :mega: New
 
-- Jan. 28. 2025: :smiley_cat: Commit the codes!
+- Jan. 28. 2025: :smiley_cat: Codes released!
 
 ## :gear: Installation
 
