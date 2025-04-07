@@ -22,6 +22,7 @@ If you think our work useful for your research, please cite:
 
 ## :mega: New
 
+- Apr. 07. 2025: :tada: The paper is accepted by IEEE T-MM!
 - Jan. 28. 2025: :smiley_cat: Codes released!
 
 ## :gear: Installation
